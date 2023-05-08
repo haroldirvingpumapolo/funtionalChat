@@ -7,7 +7,9 @@ function ChatBox() {
       <div className="second_separator">
         <div className="second_separator-container"></div>
       </div>
-      <div className="chatBox_chats"></div>
+      <div className="chatBox_chats">
+        
+      </div>
       <div className="chatBox_input_send-flex flex">
         <div className="chatBox_input_send-container ">
           <input type="text" value="" />

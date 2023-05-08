@@ -139,7 +139,7 @@ input:focus {
   width: 100%;
   border-radius: 8px;
   display: flex;
-  border: red 1px solid;
+  border: white 1px solid;
 }
 .chatBox_input_send-container input {
   width: 100%;
