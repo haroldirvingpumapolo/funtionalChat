@@ -1,6 +1,10 @@
-import { AGREGAR_MENSAJE_CHAT } from '../types/types';
-
-export const agregarMensajeChat = (nombreUsuario, nombreChat, mensaje) => ({
-  type: AGREGAR_MENSAJE_CHAT,
-  payload: { nombreUsuario, nombreChat, mensaje },
+import { ADD_CHAT_MESSAGE } from '../types/types';
+import {CHAT_SELECTOR} from '../types/types'
+export const AddChatMessage = (username, chatName, message) => ({
+  type: ADD_CHAT_MESSAGE,
+  payload: { username, chatName, message },
+});
+export const chatSelector = (username, chatName, message) => ({
+  type: CHAT_SELECTOR,
+  payload: { username, chatName, message },
 });

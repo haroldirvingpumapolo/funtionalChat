@@ -1,11 +1,17 @@
+import { useSelector } from "react-redux";
+import ShowChatName from "./ShowChatName";
 function MessengerBar() {
+  const { usuarios } = useSelector((state) => state.chatReducer);
+  let channelType = usuarios.find(
+    (users) => users.user === "delicious-damselfly"
+  );
   return (
     <div className="messengerBar-container container">
       <div className="myUser ">
         <div className="messengerBar-containe-information messengerBar_separator">
           <div>
             <h2>My User</h2>
-            <p className="user">asdfsadf</p>
+            <p className="user">delicious-damselfly</p>
           </div>
           <img src="../../public/ajuste.png" alt="" />{" "}
         </div>
@@ -18,14 +24,9 @@ function MessengerBar() {
           <h2>Information</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        <div className="information-container container-text">
-          <img
-            className="hashtag"
-            src="../../public/picadillo.png"
-            alt="hashtag"
-          />
-          <p className="messengerBar-text">Welcome</p>
-        </div>
+        {channelType.information.channels.map(({ channelName }, key) => (
+          <ShowChatName key={key} chatName={channelName} />
+        ))}
       </div>
       <div className="separator">
         <div className="separator-container"></div>
@@ -35,21 +36,20 @@ function MessengerBar() {
           <h2>Off-topic</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        <div className="Off-topic-container container-text">
-          <img
-            className="hashtag"
-            src="../../public/picadillo.png"
-            alt="hashtag"
-          />
-          <p className="messengerBar-text">asdfsadf</p>
-        </div>
+        {channelType.offTopic.channels.map(({ channelName }, key) => (
+          <ShowChatName key={key} chatName={channelName} />
+        ))}
       </div>
       <div className="separator">
         <div className="separator-container"></div>
       </div>
       <div className="other Users">
         <h2>Other Users</h2>
-        <p className="messengerBar-text">asdfsadf</p>
+        {channelType.otherUsers.channels.map(({ chatUsers }, key) => (
+          <p key={key} className="messengerBar-text">
+            {chatUsers}
+          </p>
+        ))}
       </div>
     </div>
   );

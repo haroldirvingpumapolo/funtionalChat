@@ -26,8 +26,6 @@ p {
 
 .flex {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .second_separator-container {
@@ -63,6 +61,8 @@ input:focus {
 /* ChatTypeSearchBar */
 .chatTypeSearchBar-flex {
   height: 60.29px;
+  justify-content: center;
+  align-items: center;
   background-color: #451046;
   width: 100%;
 }
@@ -151,4 +151,38 @@ input:focus {
   width: 24px;
   height: 24px;
   translate: -20px 8px;
+}
+/* message-flex */
+.message-flex {
+  padding: 0 12px ;
+  align-items: center;
+}
+.message-flex img {
+  width: 40px;
+  height: 40px;
+}
+.message-container {
+  height: 48px;
+  padding: 0 0 0 8px;
+}
+.message-writtenBy_date {
+  align-items: center;
+  height: 24px;
+}
+.message-writtenBy {
+  height: 24px;
+  padding: 0 8px 0 0;
+}
+.message-date {
+  height: 18px;
+  font-size: 12px;
+}
+.message-text {
+  height: 24px;
+  font-size: 16px;
+}
+.message-text-only{
+  height: 24px;
+  font-size: 16px;
+  padding: 0 60px;
 }

@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="app-flex flex">
       <ChatTypeSearchBar />
-      {getFormattedDate()}
+      {console.log(getFormattedDate())}
       <div className="messengerBar_chatBox-flex flex ">
         <MessengerBar />
         <ChatBox />
