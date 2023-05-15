@@ -1,11 +1,25 @@
 import Message from "./message";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OnlyMessage from "./OnlyMessage";
+import { useState } from "react";
+import { addChatMessage } from "../store/actions/actions";
 
 function ChatBox() {
   const { showSelectedChat } = useSelector((state) => state.chatReducer);
-
-  let previousWrittenBy = null;
+  const [chatTextValue, setChatTextValue] = useState("");
+  const dispatch = useDispatch();
+  let previousWrittenBy;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      addChatMessage(
+        "delicious-damselfly",
+        chatTextValue,
+        new Date().getTime()
+      )
+    );
+    setChatTextValue("");
+  };
 
   return (
     <div className="chatBox">
@@ -27,12 +41,16 @@ function ChatBox() {
         })}
       </div>
       <div className="chatBox_input_send-flex flex">
-        <div className="chatBox_input_send-container ">
-          <input type="text" value="" />
+        <form onSubmit={handleSubmit} className="chatBox_input_send-container ">
+          <input
+            type="text"
+            value={chatTextValue}
+            onChange={(e) => setChatTextValue(e.target.value)}
+          />
           <label>
             <img src="../../public/enviar.png" alt="lupa" />
           </label>
-        </div>
+        </form>
       </div>
     </div>
   );

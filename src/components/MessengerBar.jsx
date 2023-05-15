@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import ShowChatName from "./ShowChatName";
+
+
 function MessengerBar() {
-  const { usuarios } = useSelector((state) => state.chatReducer);
-  let channelType = usuarios.find(
-    (users) => users.user === "delicious-damselfly"
-  );
+  const { usuarios } = useSelector((state) => state.chatReducer);  
+  const username = usuarios.find((users) => users.user === "delicious-damselfly");
+
+
   return (
     <div className="messengerBar-container container">
       <div className="myUser ">
@@ -24,8 +26,8 @@ function MessengerBar() {
           <h2>Information</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        {channelType.information.channels.map(({ channelName }, key) => (
-          <ShowChatName key={key} chatName={channelName} />
+        {username.information.channels.map(({ channelName }, key) => (
+          <ShowChatName key={key} chatName={channelName}  />
         ))}
       </div>
       <div className="separator">
@@ -36,17 +38,17 @@ function MessengerBar() {
           <h2>Off-topic</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        {channelType.offTopic.channels.map(({ channelName }, key) => (
+        {username.offTopic.channels.map(({ channelName }, key) => (
           <ShowChatName key={key} chatName={channelName} />
         ))}
       </div>
       <div className="separator">
         <div className="separator-container"></div>
       </div>
-      <div className="other Users">
+      <div className="otherUsers">
         <h2>Other Users</h2>
-        {channelType.otherUsers.channels.map(({ chatUsers }, key) => (
-          <p key={key} className="messengerBar-text">
+        {username.otherUsers.channels.map(({ chatUsers }, key) => (
+          <p key={key} className="messengerBar-text" >
             {chatUsers}
           </p>
         ))}

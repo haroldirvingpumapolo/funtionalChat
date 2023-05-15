@@ -12,32 +12,32 @@ const usuariosIniciales = [
             {
               writtenBy: "delicious-damselfly",
               text: "hola",
-              date: "6/5/23 5:14 PM",
+              date: 1616885640000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas?",
-              date: "8/5/23 9:14 PM",
+              date: 1572611080000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: "hola2",
-              date: "6/5/23 5:20 PM",
+              date: 1589755320000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas?2",
-              date: "8/5/23 6:14 PM",
+              date: 1534203400000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: "hola3",
-              date: "8/5/23 5:14 PM",
+              date: 1643671560000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas3?",
-              date: "8/5/23 5:14 PM",
+              date: 1621148821000,
             },
           ],
         },
@@ -51,12 +51,12 @@ const usuariosIniciales = [
             {
               writtenBy: "delicious-damselfly",
               text: "hola",
-              date: "8/5/23 5:14 PM",
+              date: 1553572210000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas?",
-              date: "8/5/23 5:14 PM",
+              date: 1553572210000,
             },
           ],
         },
@@ -66,12 +66,12 @@ const usuariosIniciales = [
             {
               writtenBy: "delicious-damselfly",
               text: "hola",
-              date: "8/5/23 5:14 PM",
+              date: 1553572210000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas?",
-              date: "8/5/23 5:14 PM",
+              date: 1477967400000,
             },
           ],
         },
@@ -85,12 +85,12 @@ const usuariosIniciales = [
             {
               writtenBy: "delicious-damselfly",
               text: "hola",
-              date: "8/5/23 5:14 PM",
+              date: 1553572210000,
             },
             {
               writtenBy: "delicious-damselfly",
               text: " como estas?",
-              date: "8/5/23 5:14 PM",
+              date: 1477967400000,
             },
           ],
         },
@@ -107,32 +107,32 @@ const usuariosIniciales = [
             {
               writtenBy: "delicious-2",
               text: "hola",
-              date: "6/5/23 5:14 PM",
+              date: 1618740523000,
             },
             {
               writtenBy: "delicious-2",
-              text: " como estas?",
-              date: "8/5/23 9:14 PM",
+              text: " como estas?", //asdf
+              date: 1631037482000,
             },
             {
               writtenBy: "delicious-2",
               text: "hola2",
-              date: "6/5/23 5:20 PM",
+              date: 1654320000000,
             },
             {
               writtenBy: "delicious-2",
               text: " como estas?2",
-              date: "8/5/23 6:14 PM",
+              date: 1532566400000,
             },
             {
               writtenBy: "delicious-2",
               text: "hola3",
-              date: "8/5/23 5:14 PM",
+              date: 1583209600000,
             },
             {
               writtenBy: "delicious-2",
               text: " como estas3?",
-              date: "8/5/23 5:14 PM",
+              date: 1227660800000,
             },
           ],
         },
@@ -150,71 +150,77 @@ const initialState = {
           (channel) => channel.channelName === "Welcome"
         ).chats
     )
-    .sort((a, b) => new Date(a.date) - new Date(b.date)),
+    .sort((a, b) => a.date - b.date)
+    .map((chat) => {
+      const convertedDateFormat = new Date(chat.date)
+        .toLocaleString("es", {
+          dateStyle: "short",
+          timeStyle: "short",
+        })
+        .replace(",", "");
+      return {
+        ...chat,
+        date: convertedDateFormat,
+      };
+    }),
+  channelTypeValue: "information",
+  channelNameValue:'Welcome'
 };
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_CHAT_MESSAGE:
-      const { username, chatName, message } = action.payload;
-      const usuarioIndex = state.usuarios.findIndex(
-        (usuario) => usuario.user === username
-      );
-      if (usuarioIndex === -1) {
-        // Si el usuario no existe en el estado global, lo creamos
-        return {
-          ...state,
-          usuarios: [
-            ...state.usuarios,
-            {
-              username,
-              chats: {
-                [chatName]: message,
+    case ADD_CHAT_MESSAGE: {
+      const {username, message, newDate } = action.payload;
+      const newMessage = {
+        writtenBy: username,
+        text: message,
+        date: newDate,
+      };
+      const usuariosNew = state.usuarios.map((users) =>
+        users.user !== username
+          ? users
+          : {
+              ...users,
+              [state.channelTypeValue]: {
+                ...users[state.channelTypeValue],
+                channels: users[state.channelTypeValue].channels.map((channel) =>
+                  channel.channelName !== state.channelNameValue
+                    ? channel
+                    : {
+                        ...channel,
+                        chats: [...channel.chats, newMessage],
+                      }
+                ),
               },
-            },
-          ],
-        };
-      } else {
-        // Si el usuario ya existe en el estado global, actualizamos su message en el chat correspondiente
-        const usuarioActualizado = {
-          ...state.usuarios[usuarioIndex],
-          information: {
-            ...state.usuarios[usuarioIndex].information,
-            channels: state.usuarios[usuarioIndex].information.channels.map(
-              (channel) => {
-                if (channel.channelName === chatName) {
-                  return {
-                    ...channel,
-                    chats: [...channel.chats, message],
-                  };
-                }
-                return channel;
-              }
-            ),
-          },
-        };
-        const usuariosActualizados = [
-          ...state.usuarios.slice(0, usuarioIndex),
-          usuarioActualizado,
-          ...state.usuarios.slice(usuarioIndex + 1),
-        ];
-        return {
-          ...state,
-          usuarios: usuariosActualizados,
-        };
-      }
-
-    // case CHAT_SELECTOR:
-    //   const newValueSelector = state.usuarios
-    //     .find((users) => users.user === "delicious-damselfly")
-    //     .information.channels.find(
-    //       (channel) => channel.channelName === "Welcome"
-    //     )
-    //     .chats.sort((a, b) => new Date(a.date) - new Date(b.date));
-    //   return { ...state, showSelectedChat: newValueSelector };
-
+            }
+      );
+      const showSelectedChatNew = usuariosNew
+        .flatMap(
+          (user) =>
+            user[state.channelTypeValue].channels.find(
+              (channel) => channel.channelName === "Welcome"
+            ).chats
+        )
+        .sort((a, b) => a.date - b.date)
+        .map((chat) => {
+          const convertedDateFormat = new Date(chat.date)
+            .toLocaleString("es", {
+              dateStyle: "short",
+              timeStyle: "short",
+            })
+            .replace(",", "");
+          return { ...chat, date: convertedDateFormat };
+        });
+      return {
+        ...state,
+        usuarios: usuariosNew,
+        showSelectedChat: showSelectedChatNew,
+      };
+    }
+   
     default:
       return state;
   }
 };
+
 export default chatReducer;

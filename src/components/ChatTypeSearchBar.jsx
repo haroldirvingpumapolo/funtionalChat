@@ -6,7 +6,12 @@ function ChatTypeSearchBar() {
         <label>
           <img src={lupa} alt="lupa" />
         </label>
-        <input type="text" placeholder="Search grous and chats" value="" />
+        <input
+          type="text"
+          placeholder="Search grous and chats"
+          value=""
+          onChange={() => console.log("sadf")}
+        />
       </div>
     </div>
   );

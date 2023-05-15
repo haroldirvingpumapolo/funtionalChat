@@ -8,8 +8,10 @@ function ShowChatName({ chatName }) {
     </div>
   );
 }
-ShowChatName.PropTypes = {
+
+ShowChatName.propTypes = {
   chatName: PropTypes.string.isRequired,
+  channelType: PropTypes.string.isRequired,
 };
 
 export default ShowChatName;
