@@ -2,22 +2,22 @@ import Message from "./message";
 import { useDispatch, useSelector } from "react-redux";
 import OnlyMessage from "./OnlyMessage";
 import { useState } from "react";
-import { addChatMessage } from "../store/actions/actions";
+import { addChatMessage } from "../store/actions/actionsAllUserData";
 
 function ChatBox() {
-  const { showSelectedChat } = useSelector((state) => state.chatReducer);
+  const { showSelectedChat, allUserData, registeredId } = useSelector(
+    (state) => state.chatReducer
+  );
+  const username = allUserData.find(
+    (users) => users.idUser === registeredId
+  ).username;
+
   const [chatTextValue, setChatTextValue] = useState("");
   const dispatch = useDispatch();
   let previousWrittenBy;
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      addChatMessage(
-        "delicious-damselfly",
-        chatTextValue,
-        new Date().getTime()
-      )
-    );
+    dispatch(addChatMessage(chatTextValue, new Date().getTime()));
     setChatTextValue("");
   };
 
@@ -30,11 +30,11 @@ function ChatBox() {
         <div className="second_separator-container"></div>
       </div>
       <div className="chatBox_chats">
-        {showSelectedChat.map(({ writtenBy, date, text }, key) => {
-          const isFirstMessage = previousWrittenBy !== writtenBy;
-          previousWrittenBy = writtenBy;
+        {showSelectedChat.map(({ idUser, text, date }, key) => {
+          const isFirstMessage = previousWrittenBy !== idUser;
+          previousWrittenBy = idUser;
           return isFirstMessage ? (
-            <Message key={key} writtenBy={writtenBy} date={date} text={text} />
+            <Message key={key} username={username} text={text} date={date} />
           ) : (
             <OnlyMessage key={key} text={text} />
           );

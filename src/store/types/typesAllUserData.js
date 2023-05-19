@@ -1,0 +1,2 @@
+export const ADD_CHAT_MESSAGE = "ADD_CHAT_MESSAGE";
+export const CHAT_SELECTOR = "CHAT_SELECTOR";

@@ -133,6 +133,7 @@ input:focus {
 .chatBox_chats {
   height: 100%;
   overflow: auto;
+  
 }
 .chatBox_input_send-flex {
   padding: 0 12px 0 12px;

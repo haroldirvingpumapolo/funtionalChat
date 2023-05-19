@@ -1,11 +1,18 @@
 import { useSelector } from "react-redux";
 import ShowChatName from "./ShowChatName";
-
+import { chatSelector } from "../store/actions/actionsAllUserData";
+import { useDispatch } from "react-redux";
 
 function MessengerBar() {
-  const { usuarios } = useSelector((state) => state.chatReducer);  
-  const username = usuarios.find((users) => users.user === "delicious-damselfly");
+  const { allUserData, registeredId } = useSelector(
+    (state) => state.chatReducer
+  );
+  const sessionIdOf = allUserData.find(
+    (users) => users.idUser === registeredId
+  );
+  const username = sessionIdOf.username;
 
+  const dispatch = useDispatch();
 
   return (
     <div className="messengerBar-container container">
@@ -13,7 +20,7 @@ function MessengerBar() {
         <div className="messengerBar-containe-information messengerBar_separator">
           <div>
             <h2>My User</h2>
-            <p className="user">delicious-damselfly</p>
+            <p className="user">{username}</p>
           </div>
           <img src="../../public/ajuste.png" alt="" />{" "}
         </div>
@@ -26,8 +33,12 @@ function MessengerBar() {
           <h2>Information</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        {username.information.channels.map(({ channelName }, key) => (
-          <ShowChatName key={key} chatName={channelName}  />
+        {sessionIdOf.information.channels.map(({ channelName }, key) => (
+          <ShowChatName
+            key={key}
+            channelType={"information"}
+            chatName={channelName}
+          />
         ))}
       </div>
       <div className="separator">
@@ -38,8 +49,12 @@ function MessengerBar() {
           <h2>Off-topic</h2>
           <img src="../../public/agregar.png" alt="agregar" />
         </div>
-        {username.offTopic.channels.map(({ channelName }, key) => (
-          <ShowChatName key={key} chatName={channelName} />
+        {sessionIdOf.offTopic.channels.map(({ channelName }, key) => (
+          <ShowChatName
+            key={key}
+            channelType={"offTopic"}
+            chatName={channelName}
+          />
         ))}
       </div>
       <div className="separator">
@@ -47,9 +62,13 @@ function MessengerBar() {
       </div>
       <div className="otherUsers">
         <h2>Other Users</h2>
-        {username.otherUsers.channels.map(({ chatUsers }, key) => (
-          <p key={key} className="messengerBar-text" >
-            {chatUsers}
+        {sessionIdOf.otherUsers.channels.map(({ channelName }, key) => (
+          <p
+            key={key}
+            className="container-text"
+            onClick={() => dispatch(chatSelector("otherUsers", channelName))}
+          >
+            {channelName}
           </p>
         ))}
       </div>
