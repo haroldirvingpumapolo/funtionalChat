@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addChatMessage } from "../store/actions/actionsAllUserData";
-import Message from "./message";
+import Message from "./Message";
 import OnlyMessage from "./OnlyMessage";
 
 function ChatBox() {
