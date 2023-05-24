@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ChatBox from "./components/ChatBox";
 import ChatTypeSearchBar from "./components/ChatTypeSearchBar";
-import MessengerBar from "./components/messengerBar";
+import MessengerBar from "./components/MessengerBar";
 import { useDispatch } from "react-redux";
 import { addNewUser, newUserLogin } from "./store/actions/actionsAllUserData";
 
