@@ -1,2 +1,4 @@
 export const ADD_CHAT_MESSAGE = "ADD_CHAT_MESSAGE";
 export const CHAT_SELECTOR = "CHAT_SELECTOR";
+export const ADD_NEW_USER = 'ADD_NEW_USER';
+export const NEW_USER_LOGIN = 'NEW_USER_LOGIN'
