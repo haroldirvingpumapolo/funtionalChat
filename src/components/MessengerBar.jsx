@@ -63,7 +63,7 @@ function MessengerBar() {
       <div className="otherUsers">
         <h2>Other Users</h2>
         {sessionIdOf.otherUsers.channels.map(({ channelName }, key) => {
-          const sentBy = allUserData.find(
+          const username = allUserData.find(
             (user) => user.idUser === channelName
           ).username;
           
@@ -73,7 +73,7 @@ function MessengerBar() {
             className="container-text"
             onClick={() => dispatch(chatSelector("otherUsers", channelName))}
           >
-            {sentBy}
+            {username}
           </p>)
         })}
       </div>
