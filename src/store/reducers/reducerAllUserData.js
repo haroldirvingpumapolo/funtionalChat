@@ -3,11 +3,13 @@ import {
   CHAT_SELECTOR,
   ADD_NEW_USER,
   NEW_USER_LOGIN,
+  CHANGE_USERNAME_BY_USER_ID,
+  ADD_NEW_CHAT,
 } from "../types/typesAllUserData";
 
 const initialUserData = [
   {
-    idUser: "1616885640001",
+    idUser: 1616885640001,
     username: "testUser1",
     information: {
       channels: [
@@ -15,67 +17,67 @@ const initialUserData = [
           channelName: "Welcome",
           chats: [
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola",
               date: 1616885640000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas?",
               date: 1572611080000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola2",
               date: 1589755320000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas?2",
               date: 1534203400000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola3",
               date: 1643671560000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas3?",
               date: 1621148821000,
             },
@@ -89,12 +91,12 @@ const initialUserData = [
           channelName: "Chat4",
           chats: [
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola",
               date: 1553572210000,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas?",
               date: 1553578210000,
             },
@@ -104,12 +106,12 @@ const initialUserData = [
           channelName: "Readonly",
           chats: [
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola",
               date: 1553572210777,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas?",
               date: 1477967400444,
             },
@@ -120,29 +122,29 @@ const initialUserData = [
     otherUsers: {
       channels: [
         {
-          channelName: "1616885640022",
+          channelName: 1616885640022,
           chats: [
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: "hola",
               date: 1553574267850,
             },
             {
-              idUser: "1616885640001",
+              idUser: 1616885640001,
               text: " como estas?",
               date: 1477964530000,
             },
           ],
         },
         {
-          channelName: "1616885640333",
+          channelName: 1616885640333,
           chats: [],
         },
       ],
     },
   },
   {
-    idUser: "1616885640022",
+    idUser: 1616885640022,
     username: "testUser2",
     information: {
       channels: [
@@ -150,32 +152,32 @@ const initialUserData = [
           channelName: "Welcome",
           chats: [
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: "hola",
               date: 1618740523000,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: " como estas?",
               date: 1631037482000,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: "hola2",
               date: 1654320000000,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: " como estas?2",
               date: 1532566400000,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: "hola3",
               date: 1583209600000,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: " como estas3?",
               date: 1227660800000,
             },
@@ -189,29 +191,29 @@ const initialUserData = [
     otherUsers: {
       channels: [
         {
-          channelName: "1616885640001",
+          channelName: 1616885640001,
           chats: [
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: "hola soy segundo",
               date: 1477967404560,
             },
             {
-              idUser: "1616885640022",
+              idUser: 1616885640022,
               text: " como estas soy segundo?",
               date: 1477967400000,
             },
           ],
         },
         {
-          channelName: "1616885640333",
+          channelName: 1616885640333,
           chats: [],
         },
       ],
     },
   },
   {
-    idUser: "1616885640333",
+    idUser: 1616885640333,
     username: "testUser3",
     information: {
       channels: [
@@ -236,17 +238,17 @@ const initialUserData = [
     otherUsers: {
       channels: [
         {
-          channelName: "1616885640001",
+          channelName: 1616885640001,
           chats: [
             {
-              idUser: "1616885640333",
+              idUser: 1616885640333,
               text: "hola soy tercero",
               date: 1477967400000,
             },
           ],
         },
         {
-          channelName: "1616885640022",
+          channelName: 1616885640022,
           chats: [],
         },
       ],
@@ -276,7 +278,7 @@ const initialState = {
         date: convertedDateFormat,
       };
     }),
-  registeredId: "1616885640001",
+  registeredId: 1616885640001,
   channelTypeValue: "information",
   channelNameValue: "Welcome",
 };
@@ -374,10 +376,43 @@ const chatReducer = (state = initialState, action) => {
     }
     case NEW_USER_LOGIN: {
       const { userIdToRegister } = action.payload
+      console.log(userIdToRegister);
       return {
         ...state, registeredId: userIdToRegister,
       }
     }
+    case CHANGE_USERNAME_BY_USER_ID: {
+      const { registeredUserId, newUsername } = action.payload;
+
+      const updatedChatData = [...state.allUserData];
+      updatedChatData.forEach((user) => {
+        if (user.idUser === registeredUserId) {
+          user.username = newUsername;
+        }
+      });
+      return {
+        ...state,
+        allUserData: updatedChatData,
+      }
+    }
+    case ADD_NEW_CHAT: {
+
+      const { channelTypeValue, newChatValue } = action.payload;
+      console.log(channelTypeValue);
+      console.log(newChatValue);
+      const updatedChatData = [...state.allUserData];
+      updatedChatData.forEach((users) => {
+        users[channelTypeValue].channels.push({
+          channelName: newChatValue,
+          chats: [],
+        },)
+      });
+      return {
+        ...state,
+        allUserData: updatedChatData,
+      }
+    }
+
     default:
       return state;
   }

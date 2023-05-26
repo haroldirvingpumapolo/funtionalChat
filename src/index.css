@@ -9,19 +9,21 @@
 h2 {
   font-weight: 700;
   font-size: 16px;
-  padding: 0 0 8px;
+  color: #ffffff;
 }
 h1 {
   font-weight: bold;
   padding: 0 0 0 12px;
   font-size: 16px;
+  color: #1d1c1d;
 }
 .user {
   font-size: 16px;
+  color: #cfc3cf;
 }
 p {
   font-size: 14px;
-  color: #c6c1b9;
+  color: #1d1c1d;
 }
 
 .flex {
@@ -46,6 +48,7 @@ p {
 .container-text {
   display: flex;
   align-items: center;
+  color: #cfc3cf;
 }
 .hashtag {
   width: 16px;
@@ -97,8 +100,9 @@ input:focus {
   width: 240px;
   min-width: 240px;
   padding: 8px 12px;
-  background: #2a0a2b;
+  background: #771a7a;
   height: 100%;
+  user-select: none;
 }
 .container-text {
   padding: 5px 0;
@@ -107,6 +111,7 @@ input:focus {
 }
 .messengerBar-text {
   padding: 0 10px;
+  color: #ffffff;
 }
 .messengerBar_separator {
   display: flex;
@@ -116,6 +121,7 @@ input:focus {
 .messengerBar_separator img {
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 /* chatBox */
 .chatBox {
@@ -133,7 +139,6 @@ input:focus {
 .chatBox_chats {
   height: 100%;
   overflow: auto;
-  
 }
 .chatBox_input_send-flex {
   padding: 0 12px 0 12px;
@@ -146,7 +151,7 @@ input:focus {
   width: 100%;
   border-radius: 8px;
   display: flex;
-  border: white 1px solid;
+  border: black 1px solid;
 }
 .chatBox_input_send-container input {
   width: 100%;
@@ -158,10 +163,11 @@ input:focus {
   width: 24px;
   height: 24px;
   translate: -20px 8px;
+  cursor: pointer;
 }
 /* message-flex */
 .message-flex {
-  padding: 0 12px ;
+  padding: 0 12px;
   align-items: center;
 }
 .message-flex img {
@@ -188,7 +194,7 @@ input:focus {
   height: 24px;
   font-size: 16px;
 }
-.message-text-only{
+.message-text-only {
   height: 24px;
   font-size: 16px;
   padding: 0 60px;
