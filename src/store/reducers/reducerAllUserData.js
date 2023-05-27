@@ -376,7 +376,6 @@ const chatReducer = (state = initialState, action) => {
     }
     case NEW_USER_LOGIN: {
       const { userIdToRegister } = action.payload
-      console.log(userIdToRegister);
       return {
         ...state, registeredId: userIdToRegister,
       }
@@ -398,8 +397,6 @@ const chatReducer = (state = initialState, action) => {
     case ADD_NEW_CHAT: {
 
       const { channelTypeValue, newChatValue } = action.payload;
-      console.log(channelTypeValue);
-      console.log(newChatValue);
       const updatedChatData = [...state.allUserData];
       updatedChatData.forEach((users) => {
         users[channelTypeValue].channels.push({

@@ -1,11 +1,6 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ShowChatName from "./ShowChatName";
-import {
-  chatSelector,
-  changeUsernameByUserId,
-  addNewChat,
-} from "../store/actions/actionsAllUserData";
-import { useDispatch } from "react-redux";
+import { chatSelector } from "../store/actions/actionsAllUserData";
 import { useState } from "react";
 import ModalComponent from "./Modal";
 
@@ -18,35 +13,28 @@ function MessengerBar() {
   );
   const username = sessionIdOf.username;
   const dispatch = useDispatch();
-  const [modalIsOpenChangeUsername, setModalIsOpenChangeUsername] =
-    useState(false);
-  const [modalIsOpenNewInformationChat, setModalIsOpenNewInformationChat] =
-    useState(false);
-  const [modalIsOpenNewOffTopicChat, setModalIsOpenNewOffTopicChat] =
-    useState(false);
 
-  const openModalChangeUsername = () => {
-    setModalIsOpenChangeUsername(true);
-  };
+  const [modals, setModals] = useState({
+    changeUsername: false,
+    newInformationChat: false,
+    newOffTopicChat: false,
+  });
 
-  const closeModalChangeUsername = () => {
-    setModalIsOpenChangeUsername(false);
-  };
-
-  const openModalNewInformationChat = () => {
-    setModalIsOpenNewInformationChat(true);
+  const openModal = (modalName) => {
+    setModals({
+      ...modals,
+      [modalName]: true,
+    });
   };
 
-  const closeModalNewInformationChat = () => {
-    setModalIsOpenNewInformationChat(false);
+  const closeModal = (modalName) => {
+    setModals({
+      ...modals,
+      [modalName]: false,
+    });
   };
-  const openModalNewOffTopicChat = () => {
-    setModalIsOpenNewOffTopicChat(true);
-  };
+  
 
-  const closeModalNewOffTopicChat = () => {
-    setModalIsOpenNewOffTopicChat(false);
-  };
   return (
     <div className="messengerBar-container container">
       <div className="myUser ">
@@ -56,19 +44,18 @@ function MessengerBar() {
             <p className="user">{username}</p>
           </div>
           <img
-            onClick={openModalChangeUsername}
+            onClick={() => openModal("changeUsername")}
             src="../../public/ajuste.png"
             alt=""
           />
           <ModalComponent
+            modalFor={"changeUsernameByUserId"}
             registeredId={registeredId}
             username={username}
-            dispacher={changeUsernameByUserId}
-            isOpen={modalIsOpenChangeUsername}
-            closeModal={closeModalChangeUsername}
+            isOpen={modals.changeUsername}
+            closeModal={() => closeModal("changeUsername")}
             title={"Settings"}
             inputLabel={"Nickname"}
-            isModalForNameChange={true}
           />
         </div>
       </div>
@@ -79,15 +66,15 @@ function MessengerBar() {
         <div className="messengerBar-containe-information messengerBar_separator">
           <h2>Information</h2>
           <img
-            onClick={openModalNewInformationChat}
+            onClick={() => openModal("newInformationChat")}
             src="../../public/agregar.png"
             alt="agregar"
           />
           <ModalComponent
+            modalFor={"addNewChat"}
             registeredId={registeredId}
-            dispacher={addNewChat}
-            isOpen={modalIsOpenNewInformationChat}
-            closeModal={closeModalNewInformationChat}
+            isOpen={modals.newInformationChat}
+            closeModal={() => closeModal("newInformationChat")}
             title={"Create Group Chat"}
             chatType={"in information"}
             inputLabel={"Chat Name"}
@@ -109,15 +96,15 @@ function MessengerBar() {
         <div className="messengerBar-containe-off-topic messengerBar_separator">
           <h2>Off-topic</h2>
           <img
-            onClick={openModalNewOffTopicChat}
+            onClick={() => openModal("newOffTopicChat")}
             src="../../public/agregar.png"
             alt="agregar"
           />
           <ModalComponent
+            modalFor={"addNewChat"}
             registeredId={registeredId}
-            dispacher={addNewChat}
-            isOpen={modalIsOpenNewOffTopicChat}
-            closeModal={closeModalNewOffTopicChat}
+            isOpen={modals.newOffTopicChat}
+            closeModal={() => closeModal("newOffTopicChat")}
             title={"Create Group Chat"}
             chatType={"in Off-topic"}
             inputLabel={"Chat Name"}

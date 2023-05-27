@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import {
+  changeUsernameByUserId,
+  addNewChat,
+  addNewUser,
+  newUserLogin,
+} from "../store/actions/actionsAllUserData";
 
 Modal.setAppElement("#root");
 
@@ -51,7 +57,6 @@ const ApplicationTheme = styled.button`
   user-select: none;
   font-size: 14px;
   cursor: pointer;
-  ${({ isModalForNameChange }) => isModalForNameChange && `display: block;`}
 `;
 const Buttons = styled.div`
   display: flex;
@@ -91,38 +96,56 @@ const DivSeparator = styled.hr`
 `;
 
 const ModalComponent = ({
+  modalFor,
+  registeredId,
+  username,
   isOpen,
   title,
-  username,
   chatType,
   inputLabel,
   closeModal,
-  isModalForNameChange,
-  registeredId,
-  dispacher,
   channelTypeValue,
 }) => {
-  const [newUsernameOrNewChatValue, setNewUsernameOrNewChatValue] = useState();
+  const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
+  const [broadcastChannel, setBroadcastChannel] = useState(null);
+  const timestamp = new Date().getTime();
 
   useEffect(() => {
-    setNewUsernameOrNewChatValue(isModalForNameChange ? username : "");
-  }, [isModalForNameChange, username]);
+    setInputValue(modalFor === "changeUsernameByUserId" ? username : "");
+    const channel = new BroadcastChannel(modalFor);
+    setBroadcastChannel(channel);
+    channel.onmessage = (event) => {
+      const { inputValue, timestamp, registeredId, channelTypeValue } =
+        event.data;
+      modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
+      modalFor === "changeUsernameByUserId" &&
+        dispatch(changeUsernameByUserId(registeredId, inputValue));
+      modalFor === "addNewChat" &&
+        dispatch(addNewChat(channelTypeValue, inputValue));
+    };
+    return () => {
+      channel.close();
+    };
+  }, [modalFor, username, dispatch, channelTypeValue, registeredId]);
 
-  function handleDispatcher() {
-    dispatch(
-      dispacher(
-        isModalForNameChange
-          ? /*si es modal para cambiar nombre usara registeredId para el actions changeUsernameByUserId */ registeredId
-          : /*si no es modal para cambiar nombre usara channelTypeValue para actions addNewChat */ channelTypeValue,
-        newUsernameOrNewChatValue
-      )
-    );
-    setNewUsernameOrNewChatValue(isModalForNameChange ? username : "");
-    closeModal();
+  function saveChanges() {
+    modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
+    modalFor === "addNewUser" && dispatch(newUserLogin(timestamp));
+    modalFor === "changeUsernameByUserId" &&
+      dispatch(changeUsernameByUserId(registeredId, inputValue));
+    modalFor === "addNewChat" &&
+      dispatch(addNewChat(channelTypeValue, inputValue));
+    if (broadcastChannel) {
+      const messageToSend = { timestamp, inputValue };
+      broadcastChannel.postMessage(messageToSend);
+    }
+    setInputValue(modalFor === "changeUsernameByUserId" ? username : "");
+    modalFor === "addNewUser" ? closeModal(false) : closeModal();
   }
+
   function handleCloseModal() {
-    setNewUsernameOrNewChatValue(isModalForNameChange ? username : "");
+    setInputValue(modalFor === "changeUsernameByUserId" ? username : "");
     closeModal();
   }
   return (
@@ -138,11 +161,11 @@ const ModalComponent = ({
         <InputLabel>{inputLabel}</InputLabel>
         <Input
           type="text"
-          value={newUsernameOrNewChatValue}
-          onChange={(e) => setNewUsernameOrNewChatValue(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter a name"
         ></Input>
-        {isModalForNameChange && (
+        {modalFor === "changeUsernameByUserId" && (
           <>
             <DivSeparator></DivSeparator>
             <ApplicationTheme
@@ -154,8 +177,10 @@ const ModalComponent = ({
         )}
         <DivSeparator></DivSeparator>
         <Buttons>
-          <CancelButton onClick={handleCloseModal}>Cancel</CancelButton>
-          <SaveButton onClick={handleDispatcher}>Save</SaveButton>
+          {modalFor !== "addNewUser" && (
+            <CancelButton onClick={handleCloseModal}>Cancel</CancelButton>
+          )}
+          <SaveButton onClick={saveChanges}>Save</SaveButton>
         </Buttons>
       </Content>
     </CustomModal>
@@ -163,15 +188,14 @@ const ModalComponent = ({
 };
 
 ModalComponent.propTypes = {
-  username: PropTypes.string,
+  modalFor: PropTypes.string,
   registeredId: PropTypes.number,
-  dispacher: PropTypes.func.isRequired,
+  username: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   chatType: PropTypes.string,
   inputLabel: PropTypes.string.isRequired,
-  isModalForNameChange: PropTypes.bool,
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
   channelTypeValue: PropTypes.string,
 };
 
