@@ -164,6 +164,7 @@ const ModalComponent = ({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter a name"
+          onKeyPress={(e) => e.key === "Enter" && saveChanges()}
         ></Input>
         {modalFor === "changeUsernameByUserId" && (
           <>

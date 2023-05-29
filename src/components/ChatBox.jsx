@@ -141,7 +141,7 @@ function ChatBox() {
             onChange={(e) => setChatTextValue(e.target.value)}
           />
           <label>
-            <img src="../../public/enviar.png" alt="lupa" />
+            <img src="../../public/enviar.png" alt="lupa" onClick={handleSubmit} />
           </label>
         </form>
       </div>

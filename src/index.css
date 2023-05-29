@@ -78,7 +78,6 @@ input:focus {
 }
 .chatTypeSearchBar-container label img {
   width: 17px;
-  flex-direction: row;
   translate: 20px 4px;
 }
 .chatTypeSearchBar-container input {
@@ -86,6 +85,7 @@ input:focus {
   font-size: 15px;
   padding: 10px 0 0 30px;
   background: none;
+  color: #969696;
 }
 
 /* messengerBar_chatBox */
@@ -145,6 +145,7 @@ input:focus {
   width: 100%;
   height: 60px;
   min-height: 60px;
+  align-items: center;
 }
 .chatBox_input_send-container {
   height: 42px;

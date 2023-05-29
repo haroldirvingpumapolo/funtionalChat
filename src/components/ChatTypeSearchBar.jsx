@@ -1,5 +1,14 @@
+import { useState } from "react";
 import lupa from "../../public/lupa.png";
+import ModalToSearchChat from "./ModalToSearchChat";
 function ChatTypeSearchBar() {
+  const [modals, setModals] = useState(false);
+  const openModal = () => {
+    setModals(true);
+  };
+  const closeModal = () => {
+    setModals(false);
+  };
   return (
     <div className="chatTypeSearchBar-flex flex">
       <div className="chatTypeSearchBar-container container">
@@ -8,9 +17,17 @@ function ChatTypeSearchBar() {
         </label>
         <input
           type="text"
-          placeholder="Search grous and chats"
-          value=""
-          onChange={() => console.log("sadf")}
+          value="Search grous and chats"
+          readOnly
+          onClick={() => openModal()}
+        />
+        <ModalToSearchChat
+          isOpen={modals}
+          closeModal={closeModal}
+          title={"Create Group Chat"}
+          chatType={"in information"}
+          inputLabel={"Chat Name"}
+          channelTypeValue={"information"}
         />
       </div>
     </div>
