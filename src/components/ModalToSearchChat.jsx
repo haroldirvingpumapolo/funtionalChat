@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
-import lupa from "../../images/lupa.png";
-import xIcon from "../../images/x.png";
-import hashtag from "../../images/picadillo.png";
+import lupa from "../../public/images/lupa.png";
+import xIcon from "../../public/images/x.png";
+import hashtag from "../../public/images/picadillo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { chatSelector } from "../store/actions/actionsAllUserData";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import lupa from "../../images/lupa.png";
+import lupa from "../../public/images/lupa.png";
 import ModalToSearchChat from "./ModalToSearchChat";
 function ChatTypeSearchBar() {
   const [modals, setModals] = useState(false);
