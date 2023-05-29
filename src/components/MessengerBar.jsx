@@ -45,7 +45,7 @@ function MessengerBar() {
           </div>
           <img
             onClick={() => openModal("changeUsername")}
-            src="../../public/images/ajuste.png"
+            src="../../images/ajuste.png"
             alt=""
           />
           <ModalComponent
@@ -67,7 +67,7 @@ function MessengerBar() {
           <h2>Information</h2>
           <img
             onClick={() => openModal("newInformationChat")}
-            src="../../public/images/agregar.png"
+            src="../../images/agregar.png"
             alt="agregar"
           />
           <ModalComponent
@@ -97,7 +97,7 @@ function MessengerBar() {
           <h2>Off-topic</h2>
           <img
             onClick={() => openModal("newOffTopicChat")}
-            src="../../public/images/agregar.png"
+            src="../../images/agregar.png"
             alt="agregar"
           />
           <ModalComponent
