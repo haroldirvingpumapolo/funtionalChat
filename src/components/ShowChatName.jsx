@@ -11,7 +11,7 @@ function ShowChatName({ chatName, channelType }) {
 
   return (
     <div className="container-text" onClick={handleClick}>
-      <img className="hashtag" src="../../public/picadillo.png" alt="hashtag" />
+      <img className="hashtag" src="../../public/images/picadillo.png" alt="hashtag" />
       <p className="messengerBar-text">{chatName}</p>
     </div>
   );
