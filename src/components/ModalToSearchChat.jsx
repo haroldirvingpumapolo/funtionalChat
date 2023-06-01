@@ -125,10 +125,8 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
   const channelNames = {};
   Object.keys(sessionIdOf).forEach((prop) => {
     if (sessionIdOf[prop].channels) {
-      channelNames[prop] = sessionIdOf[prop].channels.map((channel) =>
-        isNaN(channel.channelName)
-          ? channel.channelName.toLowerCase()
-          : channel.channelName
+      channelNames[prop] = sessionIdOf[prop].channels.map(
+        (channel) => channel.channelName
       );
     }
   });
@@ -141,7 +139,7 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
   const filteredObject = {};
   Object.keys(idsConvertedToNames).forEach((prop) => {
     filteredObject[prop] = idsConvertedToNames[prop].filter((item) =>
-      item.includes(inputValue.toLowerCase())
+      item.includes(inputValue)
     );
   });
 
@@ -178,20 +176,23 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
                     <ChatTypesTitle>
                       {prop.replace(/([A-Z])/g, "-$1")}
                     </ChatTypesTitle>
-                    {filteredObject[prop].map((channelName) => (
-                      <ChatDivFlex
-                        key={`${prop}-${channelName}-`}
-                        onClick={() => dispatcher(prop, channelName)}
-                      >
-                        <NameChatDivContainer>
-                          <ImgHashtag src={hashtag} alt="hashtag" />
-                          <NameChatPagharth>{channelName}</NameChatPagharth>
-                        </NameChatDivContainer>
-                        <TypeChatLabel>
-                          {prop.replace(/([A-Z])/g, "-$1")}
-                        </TypeChatLabel>
-                      </ChatDivFlex>
-                    ))}
+                    {channelNames[prop].map((channelName) => {
+                      isNaN(channelName)
+                      return (
+                        <ChatDivFlex
+                          key={`${prop}-${channelName}-`}
+                          onClick={() => dispatcher(prop, channelName)}
+                        >
+                          <NameChatDivContainer>
+                            <ImgHashtag src={hashtag} alt="hashtag" />
+                            <NameChatPagharth>{channelName}</NameChatPagharth>
+                          </NameChatDivContainer>
+                          <TypeChatLabel>
+                            {prop.replace(/([A-Z])/g, "-$1")}
+                          </TypeChatLabel>
+                        </ChatDivFlex>
+                      );
+                    })}
                   </div>
                 )
             )
