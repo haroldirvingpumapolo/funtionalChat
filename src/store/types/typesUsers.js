@@ -1,0 +1,2 @@
+export const ADD_NEW_USER = 'ADD_NEW_USER';
+export const CHANGE_USERNAME = 'CHANGE_USERNAME'
