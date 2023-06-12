@@ -5,8 +5,7 @@ import styled from "styled-components";
 import lupa from "../../public/images/lupa.png";
 import xIcon from "../../public/images/x.png";
 import hashtag from "../../public/images/picadillo.png";
-import { useDispatch, useSelector } from "react-redux";
-import { chatSelector } from "../store/actions/actionsAllUserData";
+import { useSelector } from "react-redux";
 
 const ImgLupa = styled.img`
   width: 17px;
@@ -107,22 +106,12 @@ const NoResults = styled.p`
   font-style: italic;
   text-transform: capitalize;
 `;
-const ModalToSearchChat = ({ isOpen, closeModal }) => {
+const ModalToSearchChat = ({ isOpen, closeModal, registeredId }) => {
   const [inputValue, setInputValue] = useState("");
-  const { allUserData, registeredId } = useSelector(
-    (state) => state.chatReducer
-  );
-  const sessionIdOf = allUserData.find(
-    (users) => users.idUser === registeredId
-  );
-  const dispatch = useDispatch();
+  const { usersData } = useSelector((state) => state.reducerUsers);
+  const sessionIdOf = usersData.find((users) => users.senderId === registeredId);
 
-  function dispatcher(channelTypeValue, channelNameValue) {
-    dispatch(chatSelector(channelTypeValue, channelNameValue));
-    closeModal();
-  }
-
-  const channelNames = {};
+  /* const channelNames = {};
   Object.keys(sessionIdOf).forEach((prop) => {
     if (sessionIdOf[prop].channels) {
       channelNames[prop] = sessionIdOf[prop].channels.map(
@@ -133,7 +122,7 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
 
   const idsConvertedToNames = { ...channelNames };
   idsConvertedToNames.otherUsers = idsConvertedToNames.otherUsers.map(
-    (idUsers) => allUserData.find((user) => user.idUser === idUsers).username
+    (senderIds) => usersData.find((user) => user.senderId === senderIds).username
   );
 
   const filteredObject = {};
@@ -142,7 +131,7 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
       item.includes(inputValue)
     );
   });
-
+ */
   return (
     <CustomModal
       isOpen={isOpen}
@@ -165,7 +154,7 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
           </DivInputContainer>
         </DivInput>
         <DivShowChats>
-          {Object.keys(filteredObject).some(
+          {/* Object.keys(filteredObject).some(
             (prop) => filteredObject[prop].length > 0
           ) ? (
             Object.keys(filteredObject).map(
@@ -177,12 +166,9 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
                       {prop.replace(/([A-Z])/g, "-$1")}
                     </ChatTypesTitle>
                     {channelNames[prop].map((channelName) => {
-                      isNaN(channelName)
+                      isNaN(channelName);
                       return (
-                        <ChatDivFlex
-                          key={`${prop}-${channelName}-`}
-                          onClick={() => dispatcher(prop, channelName)}
-                        >
+                        <ChatDivFlex key={`${prop}-${channelName}-`}>
                           <NameChatDivContainer>
                             <ImgHashtag src={hashtag} alt="hashtag" />
                             <NameChatPagharth>{channelName}</NameChatPagharth>
@@ -198,7 +184,7 @@ const ModalToSearchChat = ({ isOpen, closeModal }) => {
             )
           ) : (
             <NoResults>No Results</NoResults>
-          )}
+          ) */}
         </DivShowChats>
       </Content>
     </CustomModal>

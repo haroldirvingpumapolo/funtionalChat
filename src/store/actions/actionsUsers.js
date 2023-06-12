@@ -1,5 +1,4 @@
-import { ADD_NEW_USER } from "../types/typesAllUserData";
-import { CHANGE_USERNAME } from "../types/typesUsers";
+import { ADD_NEW_USER, CHANGE_USERNAME, } from "../types/typesUsers";
 
 export const addNewUser = (newIdUser, newUsername) => ({
   type: ADD_NEW_USER,

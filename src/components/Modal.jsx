@@ -5,11 +5,9 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
   changeUsernameByUserId,
-  addNewChat,
   addNewUser,
-  newUserLogin,
-} from "../store/actions/actionsAllUserData";
-
+} from "../store/actions/actionsUsers";
+import { addChannel } from "../store/actions/actionsChannels";
 Modal.setAppElement("#root");
 
 const CustomModal = styled(Modal)`
@@ -41,7 +39,6 @@ const InputLabel = styled.p`
   padding: 0 0 4px;
   color: #616061;
 `;
-
 const Input = styled.input`
   width: 100%;
   border: gray 1px solid;
@@ -98,50 +95,59 @@ const DivSeparator = styled.hr`
 const ModalComponent = ({
   modalFor,
   registeredId,
+  createRegisteredId,
   username,
   isOpen,
   title,
   chatType,
   inputLabel,
   closeModal,
-  channelTypeValue,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
   const [broadcastChannel, setBroadcastChannel] = useState(null);
   const timestamp = new Date().getTime();
 
+  const actions = {
+    addNewUser: changeUsernameByUserId,
+    changeUsernameByUserId: addNewUser,
+    addChannel: addChannel,
+  };
+
   useEffect(() => {
     setInputValue(modalFor === "changeUsernameByUserId" ? username : "");
     const channel = new BroadcastChannel(modalFor);
     setBroadcastChannel(channel);
     channel.onmessage = (event) => {
-      const { inputValue, timestamp, registeredId, channelTypeValue } =
-        event.data;
+      const { inputValue, timestamp, registeredId } = event.data;
       modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
       modalFor === "changeUsernameByUserId" &&
         dispatch(changeUsernameByUserId(registeredId, inputValue));
-      modalFor === "addNewChat" &&
-        dispatch(addNewChat(channelTypeValue, inputValue));
     };
     return () => {
       channel.close();
     };
-  }, [modalFor, username, dispatch, channelTypeValue, registeredId]);
+  }, [modalFor, username, dispatch, registeredId]);
 
   function saveChanges() {
-    modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
-    modalFor === "addNewUser" && dispatch(newUserLogin(timestamp));
+    dispatch(
+      actions[modalFor](
+        timestamp,
+        inputValue,
+        modalFor === "addMessage" && idCategory
+      )
+    );
+
+    modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue)),
+      createRegisteredId(timestamp);
     modalFor === "changeUsernameByUserId" &&
       dispatch(changeUsernameByUserId(registeredId, inputValue));
-    modalFor === "addNewChat" &&
-      dispatch(addNewChat(channelTypeValue, inputValue));
     if (broadcastChannel) {
       const messageToSend = { timestamp, inputValue };
       broadcastChannel.postMessage(messageToSend);
     }
     setInputValue(modalFor === "changeUsernameByUserId" ? username : "");
-    modalFor === "addNewUser" ? closeModal(false) : closeModal();
+   closeModal();
   }
 
   function handleCloseModal() {
@@ -189,15 +195,15 @@ const ModalComponent = ({
 };
 
 ModalComponent.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  inputLabel: PropTypes.string.isRequired,
   modalFor: PropTypes.string,
   registeredId: PropTypes.number,
   username: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
   chatType: PropTypes.string,
-  inputLabel: PropTypes.string.isRequired,
   closeModal: PropTypes.func,
-  channelTypeValue: PropTypes.string,
+  createRegisteredId: PropTypes.func,
 };
 
 export default ModalComponent;

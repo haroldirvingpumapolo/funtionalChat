@@ -5,9 +5,17 @@ const initialState = {
     {
       participants: [1616885640001, 1616885640022],
       messages: [
-        { senderId: 1616885640001, text: "Hola, ¿cómo estás?", date: 1685512368006 },
+        { senderId: 1616885640001, text: "Primer Texto", date: 1685512368006 },
+        { senderId: 1616885640001, text: "¿Quieres salir este fin de semana?", date: 1685592653800 },
         { senderId: 1616885640022, text: "Bien, gracias. ¿Y tú?", date: 1685594568800 },
-        { senderId: 1616885640001, text: "¿Quieres salir este fin de semana?", date: 1685592653800 }
+      ]
+    }, {
+      participants: [1616885646501, 1616885635279],
+      messages: [
+        { senderId: 1616885640001, text: "Segundo Texto", date: 1685512368006 },
+        { senderId: 1616885640001, text: "Segundo Texto 2", date: 1685512368088 },
+        { senderId: 1616885640001, text: "¿Quieres salir este fin de semana?", date: 1685592653800 },
+        { senderId: 1616885640022, text: "Bien, gracias. ¿Y tú?", date: 1685594568800 },
       ]
     },
   ]
