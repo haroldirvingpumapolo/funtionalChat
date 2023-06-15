@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import ShowChatName from "./ShowChatName";
 import { useState } from "react";
 import ModalComponent from "./Modal";
+import ModalSetting from "./ModalSetting";
 import PropTypes from "prop-types";
 
 function MessengerBar({
@@ -13,12 +14,13 @@ function MessengerBar({
   const { categories } = useSelector((state) => state.reducerCategories);
   const { channels } = useSelector((state) => state.reducerChannels);
   const registeredUser = usersData.find((users) => users.id === registeredId);
+  const username = registeredUser.username;
   const [modals, setModals] = useState(() => {
     const initialModals = {
       changeUsernameByUserId: false,
     };
     categories.forEach(({ categoryName }) => {
-      const formattedCategoryName = categoryName.replace(/-/g, "_");
+      const formattedCategoryName = categoryName.replace(/[^\w\s]/gi, '_');
       initialModals[formattedCategoryName] = false;
     });
 
@@ -45,30 +47,28 @@ function MessengerBar({
         <div className="messengerBar-containe-information messengerBar_separator">
           <div>
             <h2>My User</h2>
-            <p className="user">{registeredUser.username}</p>
+            <p className="user">{username}</p>
           </div>
           <img
             onClick={() => openModal("changeUsernameByUserId")}
             src="../../images/ajuste.png"
             alt=""
           />
-          <ModalComponent
-            modalFor={"changeUsernameByUserId"}
+          <ModalSetting
+            username={username}
             registeredId={registeredId}
-            username={registeredUser.username}
-            isOpen={modals["changeUsernameByUserId"]}
-            closeModal={() => closeModal("changeUsernameByUserId")}
             title={"Settings"}
             inputLabel={"Nickname"}
+            closeModal={() => closeModal("changeUsernameByUserId")}
+            isOpen={modals["changeUsernameByUserId"]}
           />
         </div>
       </div>
       <div className="separator">
         <div className="separator-container"></div>
       </div>
-
       {categories.map((category) => {
-        const formattedCategoryName = category.categoryName.replace(/-/g, "_");
+        const formattedCategoryName = category.categoryName.replace(/[^\w\s]/gi, '_');
         return (
           <div key={category.id}>
             <div className="messengerBar-containe-information messengerBar_separator">
@@ -80,26 +80,27 @@ function MessengerBar({
               />
             </div>
             <ModalComponent
-              modalFor={"addChannel"}
-              registeredId={registeredId}
-              isOpen={modals[formattedCategoryName]}
-              closeModal={() => closeModal(formattedCategoryName)}
-              title={"Create Group Chat"}
+              idCategory={category.id}
+              inputLabel={category.categoryName}
               chatType={"in " + category.categoryName}
-              inputLabel={"Chat Name"}
-              channelTypeValue={category.categoryName}
+              title={"Create Group Chat"}
+              modalFor={"addChannel"}
+              broadcastChannelType={`addChannel${category.id}`}
+              closeModal={() => closeModal(formattedCategoryName)}
+              isOpen={modals[formattedCategoryName]}
             />
             {channels
               .filter((channel) => channel.idCategory === category.id)
               .map((channel) => (
-                <ShowChatName
-                  key={channel.id}
-                  chatName={channel.name}
-                  updateShowUserOrChannelChatsWithId={() => (
-                    updateShowUserOrChannelChatsWithId(channel.id),
-                    IsChannelOrPrivateChats(true)
-                  )}
-                />
+                <div key={channel.name}>
+                  <ShowChatName
+                    chatName={channel.name}
+                    updateShowUserOrChannelChatsWithId={() => (
+                      updateShowUserOrChannelChatsWithId(channel.id),
+                      IsChannelOrPrivateChats(true)
+                    )}
+                  />
+                </div>
               ))}
             <div className="separator">
               <div className="separator-container"></div>

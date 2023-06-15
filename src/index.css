@@ -60,7 +60,6 @@ input:focus {
 .app-flex {
   flex-direction: column;
   height: 100vh;
-  max-height: 100vh;
 }
 /* ChatTypeSearchBar */
 .chatTypeSearchBar-flex {
@@ -93,7 +92,7 @@ input:focus {
   width: 100%;
   justify-content: start;
   align-items: start;
-  height: 92.8vh;
+  height: 100%;
 }
 /* messengerBar */
 .messengerBar-container {

@@ -9,20 +9,19 @@ function App() {
   const [showUserOrChannelChatsWithId, setShowUserOrChannelChatsWithId] =
     useState(1616469654891);
   const [isChannel, setIsChannel] = useState(true); //si no es channel es privateChats
-  const [modalAddNewUser, setModalAddNewUser] = useState(false);
+  const [modalAddNewUser, setModalAddNewUser] = useState(true);
 
   return (
     <div className="app-flex flex">
       <ModalComponent
-        registeredId={registeredId}
         createRegisteredId={setRegisteredId}
-        modalFor={"addNewUser"}
-        isOpen={modalAddNewUser}
-        closeModal={() => setModalAddNewUser(false)}
-        title={"Start New Session"}
-        chatType={"Write your username"}
         inputLabel={"Username"}
-        channelTypeValue={"information"}
+        chatType={"Write your username"}
+        title={"Start New Session"}
+        modalFor={"addNewUser"}
+        broadcastChannelType={"addNewUser"}
+        closeModal={() => setModalAddNewUser(false)}
+        isOpen={modalAddNewUser}
       />
       <ChatTypeSearchBar />
       <div className="messengerBar_chatBox-flex flex ">
