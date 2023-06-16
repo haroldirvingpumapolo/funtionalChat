@@ -136,6 +136,7 @@ input:focus {
   align-items: center;
 }
 .chatBox_chats {
+  padding: 0 12px;
   height: 100%;
   overflow: auto;
 }
@@ -167,7 +168,7 @@ input:focus {
 }
 /* message-flex */
 .message-flex {
-  padding: 0 12px;
+  padding: 12px 0 0 ;
   align-items: center;
 }
 .message-flex img {
@@ -197,5 +198,5 @@ input:focus {
 .message-text-only {
   height: 24px;
   font-size: 16px;
-  padding: 0 60px;
+  padding: 0 48px;
 }

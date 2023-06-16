@@ -8,7 +8,7 @@ function App() {
   const [registeredId, setRegisteredId] = useState(1616885640001);
   const [showUserOrChannelChatsWithId, setShowUserOrChannelChatsWithId] =
     useState(1616469654891);
-  const [isChannel, setIsChannel] = useState(true); //si no es channel es privateChats
+  const [isChannel, setIsChannel] = useState(true); //si es true es channel sino es privateChats
   const [modalAddNewUser, setModalAddNewUser] = useState(true);
 
   return (
@@ -23,7 +23,11 @@ function App() {
         closeModal={() => setModalAddNewUser(false)}
         isOpen={modalAddNewUser}
       />
-      <ChatTypeSearchBar />
+      <ChatTypeSearchBar
+        registeredId={registeredId}
+        updateShowUserOrChannelChatsWithId={setShowUserOrChannelChatsWithId}
+        IsChannelOrPrivateChats={setIsChannel}
+      />
       <div className="messengerBar_chatBox-flex flex ">
         <MessengerBar
           registeredId={registeredId}

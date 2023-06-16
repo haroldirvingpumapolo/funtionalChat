@@ -106,32 +106,35 @@ const NoResults = styled.p`
   font-style: italic;
   text-transform: capitalize;
 `;
-const ModalToSearchChat = ({ isOpen, closeModal, registeredId }) => {
+const ModalToSearchChat = ({
+  isOpen,
+  closeModal,
+  updateShowUserOrChannelChatsWithId,
+  IsChannelOrPrivateChats,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const { usersData } = useSelector((state) => state.reducerUsers);
-  const sessionIdOf = usersData.find((users) => users.senderId === registeredId);
+  const { channels } = useSelector((state) => state.reducerChannels);
+  const { categories } = useSelector((state) => state.reducerCategories);
 
-  /* const channelNames = {};
-  Object.keys(sessionIdOf).forEach((prop) => {
-    if (sessionIdOf[prop].channels) {
-      channelNames[prop] = sessionIdOf[prop].channels.map(
-        (channel) => channel.channelName
-      );
-    }
-  });
-
-  const idsConvertedToNames = { ...channelNames };
-  idsConvertedToNames.otherUsers = idsConvertedToNames.otherUsers.map(
-    (senderIds) => usersData.find((user) => user.senderId === senderIds).username
-  );
-
-  const filteredObject = {};
-  Object.keys(idsConvertedToNames).forEach((prop) => {
-    filteredObject[prop] = idsConvertedToNames[prop].filter((item) =>
-      item.includes(inputValue)
+  const channelAndUserNames = {};
+  categories.forEach((category) => {
+    channelAndUserNames[category.id] = channels.filter(
+      (channel) => channel.idCategory === category.id
     );
   });
- */
+  channelAndUserNames.users = [...usersData];
+
+  const filteredObject = {};
+  Object.keys(channelAndUserNames).forEach((channelOrUserName) => {
+    filteredObject[channelOrUserName] = channelAndUserNames[
+      channelOrUserName
+    ].filter((item) => {
+      const name = item?.name || item.username;
+      return name.toLowerCase().includes(inputValue.toLowerCase());
+    });
+  });
+
   return (
     <CustomModal
       isOpen={isOpen}
@@ -148,43 +151,57 @@ const ModalToSearchChat = ({ isOpen, closeModal, registeredId }) => {
             />
             <ImgXIcon
               src={xIcon}
-              onClick={closeModal}
+              onClick={() => (closeModal(), setInputValue(""))}
               alt="closeModal"
             ></ImgXIcon>
           </DivInputContainer>
         </DivInput>
         <DivShowChats>
-          {/* Object.keys(filteredObject).some(
-            (prop) => filteredObject[prop].length > 0
-          ) ? (
-            Object.keys(filteredObject).map(
-              (prop) =>
-                filteredObject[prop].length > 0 && (
-                  <div key={prop}>
-                    <DivSeparator></DivSeparator>
-                    <ChatTypesTitle>
-                      {prop.replace(/([A-Z])/g, "-$1")}
-                    </ChatTypesTitle>
-                    {channelNames[prop].map((channelName) => {
-                      isNaN(channelName);
-                      return (
-                        <ChatDivFlex key={`${prop}-${channelName}-`}>
-                          <NameChatDivContainer>
-                            <ImgHashtag src={hashtag} alt="hashtag" />
-                            <NameChatPagharth>{channelName}</NameChatPagharth>
-                          </NameChatDivContainer>
-                          <TypeChatLabel>
-                            {prop.replace(/([A-Z])/g, "-$1")}
-                          </TypeChatLabel>
-                        </ChatDivFlex>
-                      );
-                    })}
-                  </div>
-                )
-            )
-          ) : (
-            <NoResults>No Results</NoResults>
-          ) */}
+          {Object.keys(filteredObject).map((prop) => {
+            const categoryName = categories.find(
+              (category) => category.id == prop
+            );
+            if (filteredObject[prop].length === 0) {
+              return null;
+            } else {
+              return (
+                <div key={prop}>
+                  <DivSeparator></DivSeparator>
+                  <ChatTypesTitle>
+                    {categoryName?.categoryName || "Users"}
+                  </ChatTypesTitle>
+                  {filteredObject[prop].map((name) => {
+                    return (
+                      <ChatDivFlex
+                        key={`${prop}-${name.id}-`}
+                        onClick={() => (
+                          updateShowUserOrChannelChatsWithId(name.id),
+                          closeModal(),
+                          setInputValue(""),
+                          prop == "users" //si es true es channel y si es false es privateChats osea necesito ids de usuarios
+                            ? IsChannelOrPrivateChats(false)
+                            : IsChannelOrPrivateChats(true)
+                        )}
+                      >
+                        <NameChatDivContainer>
+                          <ImgHashtag src={hashtag} alt="hashtag" />
+                          <NameChatPagharth>
+                            {name?.name || name.username}
+                          </NameChatPagharth>
+                        </NameChatDivContainer>
+                        <TypeChatLabel>
+                          {categoryName?.categoryName || "User"}
+                        </TypeChatLabel>
+                      </ChatDivFlex>
+                    );
+                  })}
+                </div>
+              );
+            }
+          })}
+          {Object.keys(filteredObject).every(
+            (prop) => filteredObject[prop].length === 0
+          ) && <NoResults>No Results</NoResults>}
         </DivShowChats>
       </Content>
     </CustomModal>
@@ -192,15 +209,11 @@ const ModalToSearchChat = ({ isOpen, closeModal, registeredId }) => {
 };
 
 ModalToSearchChat.propTypes = {
-  modalFor: PropTypes.string,
   registeredId: PropTypes.number,
-  username: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  chatType: PropTypes.string,
-  inputLabel: PropTypes.string.isRequired,
+  updateShowUserOrChannelChatsWithId: PropTypes.func,
+  IsChannelOrPrivateChats: PropTypes.func,
   closeModal: PropTypes.func,
-  channelTypeValue: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
 };
 
 export default ModalToSearchChat;
