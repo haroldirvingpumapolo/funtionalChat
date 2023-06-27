@@ -1,23 +1,30 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ShowChatName from "./ShowChatName";
-import { chatSelector } from "../store/actions/actionsAllUserData";
 import { useState } from "react";
 import ModalComponent from "./Modal";
+import ModalSetting from "./ModalSetting";
+import PropTypes from "prop-types";
 
-function MessengerBar() {
-  const { allUserData, registeredId } = useSelector(
-    (state) => state.chatReducer
-  );
-  const sessionIdOf = allUserData.find(
-    (users) => users.idUser === registeredId
-  );
-  const username = sessionIdOf.username;
-  const dispatch = useDispatch();
+function MessengerBar({
+  registeredId,
+  updateShowUserOrChannelChatsWithId,
+  IsChannelOrPrivateChats,
+}) {
+  const { usersData } = useSelector((state) => state.reducerUsers);
+  const { categories } = useSelector((state) => state.reducerCategories);
+  const { channels } = useSelector((state) => state.reducerChannels);
+  const registeredUser = usersData.find((users) => users.id === registeredId);
+  const username = registeredUser.username;
+  const [modals, setModals] = useState(() => {
+    const initialModals = {
+      changeUsernameByUserId: false,
+    };
+    categories.forEach(({ categoryName }) => {
+      const formattedCategoryName = categoryName.replace(/[^\w\s]/gi, '_');
+      initialModals[formattedCategoryName] = false;
+    });
 
-  const [modals, setModals] = useState({
-    changeUsername: false,
-    newInformationChat: false,
-    newOffTopicChat: false,
+    return initialModals;
   });
 
   const openModal = (modalName) => {
@@ -33,7 +40,6 @@ function MessengerBar() {
       [modalName]: false,
     });
   };
-  
 
   return (
     <div className="messengerBar-container container">
@@ -44,104 +50,90 @@ function MessengerBar() {
             <p className="user">{username}</p>
           </div>
           <img
-            onClick={() => openModal("changeUsername")}
+            onClick={() => openModal("changeUsernameByUserId")}
             src="../../images/ajuste.png"
             alt=""
           />
-          <ModalComponent
-            modalFor={"changeUsernameByUserId"}
-            registeredId={registeredId}
+          <ModalSetting
             username={username}
-            isOpen={modals.changeUsername}
-            closeModal={() => closeModal("changeUsername")}
+            registeredId={registeredId}
             title={"Settings"}
             inputLabel={"Nickname"}
+            closeModal={() => closeModal("changeUsernameByUserId")}
+            isOpen={modals["changeUsernameByUserId"]}
           />
         </div>
       </div>
       <div className="separator">
         <div className="separator-container"></div>
       </div>
-      <div className="information">
-        <div className="messengerBar-containe-information messengerBar_separator">
-          <h2>Information</h2>
-          <img
-            onClick={() => openModal("newInformationChat")}
-            src="../../images/agregar.png"
-            alt="agregar"
-          />
-          <ModalComponent
-            modalFor={"addNewChat"}
-            registeredId={registeredId}
-            isOpen={modals.newInformationChat}
-            closeModal={() => closeModal("newInformationChat")}
-            title={"Create Group Chat"}
-            chatType={"in information"}
-            inputLabel={"Chat Name"}
-            channelTypeValue={"information"}
-          />
-        </div>
-        {sessionIdOf.information.channels.map(({ channelName }, key) => (
-          <ShowChatName
-            key={key}
-            channelType={"information"}
-            chatName={channelName}
-          />
-        ))}
-      </div>
-      <div className="separator">
-        <div className="separator-container"></div>
-      </div>
-      <div className="off-topic">
-        <div className="messengerBar-containe-off-topic messengerBar_separator">
-          <h2>Off-topic</h2>
-          <img
-            onClick={() => openModal("newOffTopicChat")}
-            src="../../images/agregar.png"
-            alt="agregar"
-          />
-          <ModalComponent
-            modalFor={"addNewChat"}
-            registeredId={registeredId}
-            isOpen={modals.newOffTopicChat}
-            closeModal={() => closeModal("newOffTopicChat")}
-            title={"Create Group Chat"}
-            chatType={"in Off-topic"}
-            inputLabel={"Chat Name"}
-            channelTypeValue={"offTopic"}
-          />
-        </div>
-        {sessionIdOf.offTopic.channels.map(({ channelName }, key) => (
-          <ShowChatName
-            key={key}
-            channelType={"offTopic"}
-            chatName={channelName}
-          />
-        ))}
-      </div>
-      <div className="separator">
-        <div className="separator-container"></div>
-      </div>
+      {categories.map((category) => {
+        const formattedCategoryName = category.categoryName.replace(/[^\w\s]/gi, '_');
+        return (
+          <div key={category.id}>
+            <div className="messengerBar-containe-information messengerBar_separator">
+              <h2>{category.categoryName}</h2>
+              <img
+                onClick={() => openModal(formattedCategoryName)}
+                src="../../images/agregar.png"
+                alt="agregar"
+              />
+            </div>
+            <ModalComponent
+              idCategory={category.id}
+              inputLabel={category.categoryName}
+              chatType={"in " + category.categoryName}
+              title={"Create Group Chat"}
+              modalFor={"addChannel"}
+              broadcastChannelType={`addChannel${category.id}`}
+              closeModal={() => closeModal(formattedCategoryName)}
+              isOpen={modals[formattedCategoryName]}
+            />
+            {channels
+              .filter((channel) => channel.idCategory === category.id)
+              .map((channel) => (
+                <div key={channel.name}>
+                  <ShowChatName
+                    chatName={channel.name}
+                    updateShowUserOrChannelChatsWithId={() => (
+                      updateShowUserOrChannelChatsWithId(channel.id),
+                      IsChannelOrPrivateChats(true)
+                    )}
+                  />
+                </div>
+              ))}
+            <div className="separator">
+              <div className="separator-container"></div>
+            </div>
+          </div>
+        );
+      })}
       <div className="otherUsers">
         <h2>Other Users</h2>
-        {sessionIdOf.otherUsers.channels.map(({ channelName }, key) => {
-          const username = allUserData.find(
-            (user) => user.idUser === channelName
-          ).username;
-
-          return (
-            <p
-              key={key}
-              className="container-text"
-              onClick={() => dispatch(chatSelector("otherUsers", channelName))}
-            >
-              {username}
-            </p>
-          );
-        })}
+        {usersData
+          .filter((user) => user.id != registeredUser.id)
+          .map((user) => {
+            return (
+              <p
+                key={user.id}
+                className="container-text"
+                onClick={() => (
+                  updateShowUserOrChannelChatsWithId(user.id),
+                  IsChannelOrPrivateChats(false)
+                )}
+              >
+                {user.username}
+              </p>
+            );
+          })}
       </div>
     </div>
   );
 }
+MessengerBar.propTypes = {
+  registeredId: PropTypes.number,
+  updateShowUserOrChannelChatsWithId: PropTypes.func,
+  IsChannelOrPrivateChats: PropTypes.func,
+};
 
 export default MessengerBar;

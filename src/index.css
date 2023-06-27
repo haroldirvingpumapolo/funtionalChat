@@ -60,7 +60,6 @@ input:focus {
 .app-flex {
   flex-direction: column;
   height: 100vh;
-  max-height: 100vh;
 }
 /* ChatTypeSearchBar */
 .chatTypeSearchBar-flex {
@@ -93,7 +92,7 @@ input:focus {
   width: 100%;
   justify-content: start;
   align-items: start;
-  height: 92.8vh;
+  height: 100%;
 }
 /* messengerBar */
 .messengerBar-container {
@@ -137,6 +136,7 @@ input:focus {
   align-items: center;
 }
 .chatBox_chats {
+  padding: 0 12px;
   height: 100%;
   overflow: auto;
 }
@@ -168,7 +168,7 @@ input:focus {
 }
 /* message-flex */
 .message-flex {
-  padding: 0 12px;
+  padding: 12px 0 0 ;
   align-items: center;
 }
 .message-flex img {
@@ -198,5 +198,5 @@ input:focus {
 .message-text-only {
   height: 24px;
   font-size: 16px;
-  padding: 0 60px;
+  padding: 0 48px;
 }

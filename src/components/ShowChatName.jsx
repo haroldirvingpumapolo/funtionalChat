@@ -1,16 +1,8 @@
-import { PropTypes } from "prop-types";
-import { chatSelector } from "../store/actions/actionsAllUserData";
-import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
-function ShowChatName({ chatName, channelType }) {
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(chatSelector(channelType, chatName));
-  };
-
+function ShowChatName({ chatName, updateShowUserOrChannelChatsWithId }) {
   return (
-    <div className="container-text" onClick={handleClick}>
+    <div className="container-text" onClick={updateShowUserOrChannelChatsWithId}>
       <img className="hashtag" src="../../images/picadillo.png" alt="hashtag" />
       <p className="messengerBar-text">{chatName}</p>
     </div>
@@ -19,7 +11,7 @@ function ShowChatName({ chatName, channelType }) {
 
 ShowChatName.propTypes = {
   chatName: PropTypes.string.isRequired,
-  channelType: PropTypes.string.isRequired,
+  updateShowUserOrChannelChatsWithId: PropTypes.func.isRequired,
 };
 
 export default ShowChatName;

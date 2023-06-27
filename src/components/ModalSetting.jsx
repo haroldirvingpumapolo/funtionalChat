@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { addNewUser } from "../store/actions/actionsUsers";
-import { addChannel } from "../store/actions/actionsChannels";
+import { changeUsernameByUserId } from "../store/actions/actionsUsers";
 
 Modal.setAppElement("#root");
 
@@ -26,13 +25,6 @@ const Title = styled.h2`
   font-size: 18px;
   color: #1d1d1d;
 `;
-const ChatTyper = styled.p`
-  width: 18px;
-  font-size: 12px;
-  color: #1d1d1d;
-  font-style: italic;
-  white-space: nowrap;
-`;
 const InputLabel = styled.p`
   padding: 0 0 4px;
   color: #616061;
@@ -43,22 +35,21 @@ const Input = styled.input`
   border-radius: 5px;
   padding: 11.5px 12px;
 `;
+const ApplicationTheme = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 0 8px;
+  color: #616061;
+  font-style: italic;
+  user-select: none;
+  font-size: 14px;
+  cursor: pointer;
+`;
 const Buttons = styled.div`
   display: flex;
   height: 64px;
   align-items: center;
   justify-content: end;
-`;
-const CancelButton = styled.button`
-  height: 40px;
-  width: 70px;
-  padding: 5px 10px;
-  margin: 0 4px 0 0;
-  border: none;
-  background-color: transparent;
-  font-size: 16px;
-  user-select: none;
-  cursor: pointer;
 `;
 const SaveButton = styled.button`
   height: 40px;
@@ -80,57 +71,42 @@ const DivSeparator = styled.hr`
   margin: 16px 0;
 `;
 
-const ModalComponent = ({
-  idCategory,
-  createRegisteredId,
-  inputLabel,
-  chatType,
+const ModalSetting = ({
+  registeredId,
   title,
-  modalFor,
-  broadcastChannelType,
+  inputLabel,
   closeModal,
   isOpen,
+  username,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState();
   const dispatch = useDispatch();
-  const timestamp = new Date().getTime();
   const [broadcastChannel, setBroadcastChannel] = useState(null);
 
   useEffect(() => {
-    const channel = new BroadcastChannel(broadcastChannelType);
+    setInputValue(username);
+    const channel = new BroadcastChannel("changeUsernameByUserId");
     setBroadcastChannel(channel);
 
     channel.onmessage = (event) => {
-      const { timestamp, inputValue, idCategory, modalFor } = event.data;
-      modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
-      modalFor === "addChannel" &&
-        dispatch(addChannel(timestamp, inputValue, idCategory));
+      const { registeredId, inputValue } = event.data;
+      dispatch(changeUsernameByUserId(registeredId, inputValue));
     };
 
     return () => {
       channel.close();
     };
-  }, [modalFor, dispatch, broadcastChannelType]);
+  }, [dispatch, username]);
 
   function saveChanges() {
-    modalFor === "addNewUser" && dispatch(addNewUser(timestamp, inputValue));
-    modalFor === "addNewUser" && createRegisteredId(timestamp);
-    modalFor === "addChannel" &&
-      dispatch(addChannel(timestamp, inputValue, idCategory));
+    dispatch(changeUsernameByUserId(registeredId, inputValue));
     if (broadcastChannel) {
       const messageToSend = {
-        timestamp,
+        registeredId,
         inputValue,
-        idCategory,
-        modalFor,
       };
       broadcastChannel.postMessage(messageToSend);
     }
-    setInputValue("");
-    closeModal();
-  }
-  function handleCloseModal() {
-    setInputValue("");
     closeModal();
   }
   return (
@@ -140,7 +116,7 @@ const ModalComponent = ({
       contentLabel="Ventana Modal"
     >
       <Content>
-        <Title>{title}</Title> <ChatTyper>{chatType}</ChatTyper>
+        <Title>{title}</Title>
         <DivSeparator></DivSeparator> <InputLabel>{inputLabel}</InputLabel>
         <Input
           type="text"
@@ -150,10 +126,13 @@ const ModalComponent = ({
           onKeyPress={(e) => e.key === "Enter" && saveChanges()}
         ></Input>
         <DivSeparator></DivSeparator>
+        <ApplicationTheme
+          onClick={() => console.log("Cambiando color de tema")}
+        >
+          Change to Discord Theme
+        </ApplicationTheme>
+        <DivSeparator></DivSeparator>
         <Buttons>
-          {modalFor !== "addNewUser" && (
-            <CancelButton onClick={handleCloseModal}>Cancel</CancelButton>
-          )}
           <SaveButton onClick={saveChanges}>Save</SaveButton>
         </Buttons>
       </Content>
@@ -161,15 +140,12 @@ const ModalComponent = ({
   );
 };
 
-ModalComponent.propTypes = {
-  idCategory: PropTypes.number,
-  createRegisteredId: PropTypes.func,
+ModalSetting.propTypes = {
+  registeredId: PropTypes.number,
   inputLabel: PropTypes.string.isRequired,
-  chatType: PropTypes.string,
   title: PropTypes.string.isRequired,
-  modalFor: PropTypes.string.isRequired,
-  broadcastChannelType: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
+  username: PropTypes.string,
 };
-export default ModalComponent;
+export default ModalSetting;

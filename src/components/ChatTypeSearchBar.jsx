@@ -1,7 +1,13 @@
 import { useState } from "react";
 import lupa from "../../public/images/lupa.png";
 import ModalToSearchChat from "./ModalToSearchChat";
-function ChatTypeSearchBar() {
+import PropTypes from "prop-types";
+
+function ChatTypeSearchBar({
+  registeredId,
+  updateShowUserOrChannelChatsWithId,
+  IsChannelOrPrivateChats,
+}) {
   const [modals, setModals] = useState(false);
   const openModal = () => {
     setModals(true);
@@ -24,14 +30,20 @@ function ChatTypeSearchBar() {
         <ModalToSearchChat
           isOpen={modals}
           closeModal={closeModal}
-          title={"Create Group Chat"}
-          chatType={"in information"}
-          inputLabel={"Chat Name"}
-          channelTypeValue={"information"}
+          registeredId={registeredId}
+          updateShowUserOrChannelChatsWithId={
+            updateShowUserOrChannelChatsWithId
+          }
+          IsChannelOrPrivateChats={IsChannelOrPrivateChats}
         />
       </div>
     </div>
   );
 }
+ChatTypeSearchBar.propTypes = {
+  registeredId: PropTypes.number,
+  updateShowUserOrChannelChatsWithId: PropTypes.func,
+  IsChannelOrPrivateChats: PropTypes.func,
+};
 
 export default ChatTypeSearchBar;
