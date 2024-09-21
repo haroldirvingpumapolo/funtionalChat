@@ -34,7 +34,7 @@ function App() {
         isOpen={modalAddNewUser}
         closeModal={setModalAddNewUser}
         title={"Start New Session"}
-        chatType={"Write your username"}
+        chatType={"Write your username to talk with different tabs"}
         inputLabel={"Username"}
         channelTypeValue={"information"}
       />
